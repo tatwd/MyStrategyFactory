@@ -14,7 +14,7 @@ namespace MyStrategyFactory.Tests
             var strategy = defaultFactory.CreateStrategy<EmptyTestStrategy>("test101");
             Assert.NotNull(strategy);
         }
-        
+
         // [Fact]
         // public void LoadDefaultStrategyFactory_Of_RepeatEmptyTestStrategy_Throw()
         // {
@@ -23,7 +23,7 @@ namespace MyStrategyFactory.Tests
         //         var defaultFactory = new DefaultStrategyFactory();
         //     });
         // }
-        
+
         [Fact]
         public void CreateStrategy_Of_IStrategy_Ok()
         {
@@ -31,7 +31,7 @@ namespace MyStrategyFactory.Tests
             var strategy = defaultFactory.CreateStrategy<IStrategy>("test102");
             Assert.NotNull(strategy);
         }
-        
+
         [Fact]
         public void CreateStrategy_Of_InternalTestStrategy_Ok()
         {
@@ -39,7 +39,7 @@ namespace MyStrategyFactory.Tests
             var strategy = defaultFactory.CreateStrategy<InternalTestStrategy>("test102");
             Assert.NotNull(strategy);
         }
-        
+
         [Fact]
         public void CreateStrategy_Of_NotFoundStrategy_Throw()
         {
@@ -49,6 +49,25 @@ namespace MyStrategyFactory.Tests
                 var strategy = defaultFactory.CreateStrategy<EmptyTestStrategy>("test102");
             });
         }
-        
+
+		// [Fact]
+		// public void CreateStrategy_Of_GenericStrategy_Throw()
+		// {
+		// 	Assert.Throws<NotSupportedException>(() =>
+		// 	{
+		// 		var defaultFactory = new DefaultStrategyFactory();
+		// 		var strategy = defaultFactory.CreateStrategy<GenericTestStrategy<string>>("test103");
+		// 	});
+		// }
+
+        // [Fact]
+        // public void CreateStrategy_Of_AbstractStrategy_Throw()
+        // {
+        // 	Assert.Throws<NotSupportedException>(() =>
+        // 	{
+        // 		var defaultFactory = new DefaultStrategyFactory();
+        // 		var strategy = defaultFactory.CreateStrategy<AbstractTestStrategy>("test103");
+        // 	});
+        // }
     }
 }

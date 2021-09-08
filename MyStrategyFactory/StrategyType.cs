@@ -4,7 +4,13 @@ namespace MyStrategyFactory
 {
 	internal class StrategyType
 	{
-		public string Code { get; set; }
-		public Type StrategyType { get; set; }
+		public string Code { get; }
+		public Type ImplType { get; }
+
+		public StrategyType(string code, Type implType)
+		{
+			Code = code;
+			ImplType = implType;
+		}
 	}
 }

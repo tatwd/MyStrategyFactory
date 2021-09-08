@@ -9,7 +9,7 @@ namespace MyStrategyFactory.Tests
     public class EmptyTestStrategy
     {
     }
-    
+
     // /// <summary>
     // /// will register RepeatEmptyTestStrategy by 'test101' code
     // /// </summary>
@@ -17,7 +17,7 @@ namespace MyStrategyFactory.Tests
     // public class RepeatEmptyTestStrategy
     // {
     // }
-    
+
     /// <summary>
     /// will register IStrategy by 'test102' code
     /// </summary>
@@ -28,5 +28,17 @@ namespace MyStrategyFactory.Tests
         {
         }
     }
-    
+
+    // [Strategy("test103")]
+    // public class GenericTestStrategy<T>
+    // {
+    //   public T Name { get; set; }
+    // }
+
+    // [Strategy("test103")]
+    // public abstract class AbstractTestStrategy
+    // {
+    // }
+
+
 }
