@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MyStrategyFactory.Extensions
+namespace MyStrategyFactory
 {
 	internal class StrategyTypeMapper
 	{

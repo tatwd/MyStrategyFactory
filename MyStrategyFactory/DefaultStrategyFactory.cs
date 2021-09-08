@@ -10,23 +10,22 @@ namespace MyStrategyFactory
     public class DefaultStrategyFactory : IStrategyFactory
     {
 	    // Maybe this is not a safe but simple implement way
-        private static readonly Lazy<IDictionary<string, Type>> StrategyMap =
-            new Lazy<IDictionary<string, Type>>(LoadStrategyFromAssembly);
+        private static readonly Lazy<StrategyTypeMapper> StrategyMap =
+            new Lazy<StrategyTypeMapper>(LoadStrategyFromAssembly);
 
-        private static IDictionary<string, Type> LoadStrategyFromAssembly()
+        private static StrategyTypeMapper LoadStrategyFromAssembly()
         {
-            var map = new Dictionary<string, Type>();
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
+            var strategyMapper = new StrategyTypeMapper();
             var types = Util.GetStrategyTypesFromAssemblies(assemblies);
 
             foreach (var type in types)
             {
                 // Always add self type
-                map.Add(type.Code, type.ImplType);
+                strategyMapper.Add(type.Code, type.ImplType);
             }
 
-            return map;
+            return strategyMapper;
         }
 
         public T CreateStrategy<T>(string strategyCode) where T : class
@@ -39,7 +38,7 @@ namespace MyStrategyFactory
             }
 
             // Only registry self type
-            var strategyType = StrategyMap.Value[strategyCode];
+            var strategyType = StrategyMap.Value.Get(strategyCode);
 
             if (!typeof(T).IsAssignableFrom(strategyType))
                 throw new ArgumentException($"Not found strategy of type '{typeof(T).Name}' for '{strategyCode}' ");
