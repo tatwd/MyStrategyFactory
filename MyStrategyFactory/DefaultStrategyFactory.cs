@@ -30,7 +30,7 @@ namespace MyStrategyFactory
 
         public T CreateStrategy<T>(string strategyCode) where T : class
         {
-            if (!TryCreateStrategy<T>(strategyCode, out T targetType))
+            if (!TryCreateStrategy<T>(strategyCode, out var targetType))
             {
                 throw new ArgumentException($"Not found a valid type to be '{typeof(T).Name}' by '{strategyCode}'");
             }
@@ -63,7 +63,7 @@ namespace MyStrategyFactory
                 var strategyNewExpr = Expression.New(strategyType);
                 var lambdaExpr = Expression.Lambda(typeof(Func<T>), strategyNewExpr);
                 var ctorDelegate = (Func<T>)lambdaExpr.Compile();
-                var strategy = ctorDelegate();
+                targetType = ctorDelegate();
                 return true;
             }
             catch
