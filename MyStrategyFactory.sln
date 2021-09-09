@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStrategyFactory.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStrategyFactory", "MyStrategyFactory\MyStrategyFactory.csproj", "{D3C5BD95-9CCA-48CC-B8D5-19850C36743C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{CF9818A4-B0B2-4013-A12B-F940A2A228DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreWebApiDemo", "examples\AspNetCoreWebApiDemo\AspNetCoreWebApiDemo.csproj", "{D32268BE-D0C4-44EA-8AE7-CFB02B1ED5B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,12 @@ Global
 		{D3C5BD95-9CCA-48CC-B8D5-19850C36743C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3C5BD95-9CCA-48CC-B8D5-19850C36743C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3C5BD95-9CCA-48CC-B8D5-19850C36743C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32268BE-D0C4-44EA-8AE7-CFB02B1ED5B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32268BE-D0C4-44EA-8AE7-CFB02B1ED5B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32268BE-D0C4-44EA-8AE7-CFB02B1ED5B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32268BE-D0C4-44EA-8AE7-CFB02B1ED5B4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D32268BE-D0C4-44EA-8AE7-CFB02B1ED5B4} = {CF9818A4-B0B2-4013-A12B-F940A2A228DB}
 	EndGlobalSection
 EndGlobal

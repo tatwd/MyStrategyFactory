@@ -30,25 +30,46 @@ namespace MyStrategyFactory
 
         public T CreateStrategy<T>(string strategyCode) where T : class
         {
+            if (!TryCreateStrategy<T>(strategyCode, out T targetType))
+            {
+                throw new ArgumentException($"Not found a valid type to be '{typeof(T).Name}' by '{strategyCode}'");
+            }
+
+            return targetType;
+        }
+
+        public bool TryCreateStrategy<T>(string strategyCode, out T targetType) where T : class
+        {
+            targetType = default;
             var t = typeof(T);
 
             if (string.IsNullOrEmpty(t.FullName))
             {
-                throw new ArgumentNullException(nameof(t.FullName));
+                return false;
             }
 
-            // Only registry self type
-            var strategyType = StrategyMap.Value.Get(strategyCode);
+            if (!StrategyMap.Value.TryGet(strategyCode, out var strategyType))
+            {
+                return false;
+            }
 
             if (!typeof(T).IsAssignableFrom(strategyType))
-                throw new ArgumentException($"Not found strategy of type '{typeof(T).Name}' for '{strategyCode}' ");
+            {
+                return false;
+            }
 
-            var strategyNewExpr = Expression.New(strategyType);
-
-            var lambdaExpr = Expression.Lambda(typeof(Func<T>), strategyNewExpr);
-            var ctorDelegate = (Func<T>)lambdaExpr.Compile();
-            var strategy = ctorDelegate();
-            return strategy;
+            try
+            {
+                var strategyNewExpr = Expression.New(strategyType);
+                var lambdaExpr = Expression.Lambda(typeof(Func<T>), strategyNewExpr);
+                var ctorDelegate = (Func<T>)lambdaExpr.Compile();
+                var strategy = ctorDelegate();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 

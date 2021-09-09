@@ -5,26 +5,50 @@ using MyStrategyFactory.Abstractions;
 
 namespace MyStrategyFactory.Extensions
 {
-	public class ServiceStrategyFactory : IStrategyFactory
-	{
-		private readonly Lazy<StrategyTypeMapper> _strategyTypeMapper;
-		private readonly IServiceProvider _serviceProvider;
+    public class ServiceStrategyFactory : IStrategyFactory
+    {
+        private readonly Lazy<StrategyTypeMapper> _strategyTypeMapper;
+        private readonly IServiceProvider _serviceProvider;
 
-		public ServiceStrategyFactory(IServiceProvider serviceProvider)
-		{
-			_serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-			_strategyTypeMapper =
-				new Lazy<StrategyTypeMapper>(() => _serviceProvider.GetRequiredService<StrategyTypeMapper>());
-		}
+        public ServiceStrategyFactory(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider ??
+                throw new ArgumentNullException(nameof(serviceProvider));
+            _strategyTypeMapper =
+                new Lazy<StrategyTypeMapper>(() => _serviceProvider.GetRequiredService<StrategyTypeMapper>());
+        }
 
-		public T CreateStrategy<T>(string strategyCode) where T : class
-		{
-			var strategyType = _strategyTypeMapper.Value.Get(strategyCode);
-			if (!typeof(T).IsAssignableFrom(strategyType))
-				throw new ArgumentException($"Not found strategy of type '{typeof(T).Name}' for '{strategyCode}' ");
+        public T CreateStrategy<T>(string strategyCode) where T : class
+        {
+            if (!TryCreateStrategy<T>(strategyCode, out T targetType))
+            {
+                throw new ArgumentException($"Not found a valid type to be '{typeof(T).Name}' by '{strategyCode}'");
+            }
 
-			var strategyImpl = _serviceProvider.GetRequiredService(strategyType);
-			return (T)strategyImpl;
-		}
-	}
+            return targetType;
+        }
+
+        public bool TryCreateStrategy<T>(string strategyCode, out T targetType) where T : class
+        {
+            targetType = default;
+
+            if (!_strategyTypeMapper.Value.TryGet(strategyCode, out var strategyType))
+            {
+                return false;
+            }
+
+            if (!typeof(T).IsAssignableFrom(strategyType))
+            {
+                return false;
+            }
+
+            try
+            {
+                var strategyImpl = _serviceProvider.GetRequiredService(strategyType);
+                targetType = (T) strategyImpl;
+                return true;
+            }
+            catch { return false; }
+        }
+    }
 }
