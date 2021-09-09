@@ -26,7 +26,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet]
-    public WeatherForecast[] Get(string checkType)
+    public IEnumerable<WeatherForecast> Get(string checkType)
     {
         if (!_strategyFactory.TryCreateStrategy<ICheckStrategy>(checkType, out var strategy))
         {
