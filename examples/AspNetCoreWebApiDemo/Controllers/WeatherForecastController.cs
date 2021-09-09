@@ -26,27 +26,20 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet]
-    public WeatherForecast? Get(string checkType)
+    public WeatherForecast[] Get(string checkType)
     {
-        var values = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        if (!_strategyFactory.TryCreateStrategy<ICheckStrategy>(checkType, out var strategy))
+        {
+            return Array.Empty<WeatherForecast>();
+        }
+
+        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateTime.Now.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
+        .Where(strategy.Check)
         .ToArray();
-
-        if (!_strategyFactory.TryCreateStrategy<ICheckStrategy>(checkType, out var strategy))
-        {
-            return new WeatherForecast{};
-        }
-
-        foreach (var item in values)
-        {
-            if (strategy.Check(item))
-                return item;
-        }
-
-        return new WeatherForecast{};
     }
 }
